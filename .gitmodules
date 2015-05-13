@@ -1,0 +1,3 @@
+[submodule "ublock"]
+	path = ublock
+	url = git@github.com:gorhill/uBlock.git
