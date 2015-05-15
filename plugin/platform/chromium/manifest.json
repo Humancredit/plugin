@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Humancredit",
-    "version": "0.0.2.0",
+    "version": "0.3.41",
 
     "default_locale": "en",
     "description": "With Humancredit you can liberate your screen from annoying ads and create donation value with ad‑interactions. Based on uBlock₀.",

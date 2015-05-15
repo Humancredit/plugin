@@ -55,13 +55,31 @@
 
     /******************************************************************************/
 
+    /**
+     *
+     */
+    var sendFeedback = function(url, msg, rating) {
+        //console.log(url, msg, rating);
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.open("POST", url, true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("ms=" + msg + "&rt=" + rating);
+    };
+
     // HC START
     // :TODO: lot's of refactoring
     var humancreditButton = function() {
         if (document.body === null) {
             return;
         }
-        var images = document.querySelectorAll("img[src*='sg=']");
+        var images = document.querySelectorAll("img[src*='hc_ad_sg=']");
         var bodyRect = document.body.getBoundingClientRect();
 
         for (var i in images) {
@@ -70,6 +88,12 @@
                 var rect = images[i].getBoundingClientRect();
                 var hc = null;
                 var theId = "humancredit-ad-" + i;
+                var feedbackUrl = "";
+
+                var elem = images[i].parentElement.parentElement.querySelectorAll("a.hide")[0];
+                if (elem.href) {
+                    feedbackUrl = elem.href;
+                }
 
                 if (!document.getElementById(theId)) {
 
@@ -133,13 +157,17 @@
                     hcLikeItem.style.height = "15px";
                     hcLikeItem.style.lineHeight = "15px";
                     hcLikeItem.style.fontSize = "11px";
+                    hcLikeItem.style.fontFamily = 'sans-serif';
                     hcLikeItem.style.padding = "2px";
                     hcLikeItem.style.margin = "0";
                     hcLikeItem.style.cursor = "pointer";
                     hcLikeItem.innerHTML = "I like this";
+                    hcLikeItem.feedbackUrl = feedbackUrl;
                     hcLikeItem.addEventListener("click", function(event) {
-                        if (prompt("Do you want to add feedback?", "")) {
-                            alert("Feedback sent.");
+
+                        var msg = "";
+                        if ( msg = prompt("Do you want to add feedback?", "")) {
+                            sendFeedback(event.target.feedbackUrl, msg, 1);
                         }
                         // hide menu
                         event.target.parentElement.style.display = "none";
@@ -153,13 +181,20 @@
                     hcBlockItem.style.position = "relative";
                     hcBlockItem.style.height = "15px";
                     hcBlockItem.style.fontSize = "11px";
+                    hcBlockItem.style.fontFamily = 'sans-serif';
                     hcBlockItem.style.lineHeight = "15px";
                     hcBlockItem.style.padding = "2px";
                     hcBlockItem.style.margin = "0";
                     hcBlockItem.style.cursor = "pointer";
                     hcBlockItem.style.borderTop = "1px solid #FFF";
-                    hcBlockItem.innerHTML = "Block this";
+                    hcBlockItem.innerHTML = "Not relevant";
+                    hcBlockItem.feedbackUrl = feedbackUrl;
                     hcBlockItem.addEventListener("click", function(event) {
+
+                        var msg = "";
+                        if ( msg = prompt("Ad blocked! Do you want to add feedback?", "")) {
+                            sendFeedback(event.target.feedbackUrl, msg, 0);
+                        }
 
                         var localMessager = vAPI.messaging.channel('element-picker.js');
                         localMessager.send({
@@ -179,9 +214,6 @@
                         // close menu
                         event.target.parentElement.parentElement.style.display = "none";
 
-                        if (prompt("Ad blocked! Do you want to add feedback?", "")) {
-                            alert("Feedback sent.");
-                        }
                     });
 
                     hcMenu.appendChild(hcBlockItem);
@@ -194,12 +226,20 @@
                     hcDislikeItem.style.height = "15px";
                     hcDislikeItem.style.lineHeight = "15px";
                     hcDislikeItem.style.fontSize = "11px";
+                    hcDislikeItem.style.fontFamily = 'sans-serif';
                     hcDislikeItem.style.padding = "2px";
                     hcDislikeItem.style.margin = "0";
                     hcDislikeItem.style.cursor = "pointer";
                     hcDislikeItem.style.borderTop = "1px solid #FFF";
-                    hcDislikeItem.innerHTML = "Not relevant";
+                    hcDislikeItem.innerHTML = "I don't like this";
+                    hcDislikeItem.feedbackUrl = feedbackUrl;
                     hcDislikeItem.addEventListener("click", function(event) {
+
+                        var msg = "";
+                        var target = event.target;
+                        if ( msg = prompt("Ad blocked! Do you want to add feedback?", "")) {
+                            sendFeedback(event.target.feedbackUrl, msg, -1);
+                        }
 
                         var localMessager = vAPI.messaging.channel('element-picker.js');
                         localMessager.send({
@@ -218,10 +258,6 @@
 
                         // close menu
                         event.target.parentElement.parentElement.style.display = "none";
-
-                        if (prompt("Ad blocked! Do you want to add feedback?", "")) {
-                            alert("Feedback sent.");
-                        }
                     });
                     hcMenu.appendChild(hcDislikeItem);
 
@@ -233,5 +269,5 @@
     };
 
     //console.debug("humancredit-ui.js > start!");
-    setInterval(humancreditButton, 500);
+    setTimeout(humancreditButton, 1000);
 })();
