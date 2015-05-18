@@ -515,7 +515,7 @@ PageStore.prototype.filterRequest = function(context) {
         result = µb.staticNetFilteringEngine.matchString(context);
     }
 
-    result = µBlock.Humancredit.checkForSignature(context, result);
+    result = µBlock.Humancredit.checkForSignature(context, this.tabId, result);
 
     //console.debug('cache MISS: PageStore.filterRequest("%s")', context.requestURL);
     if ( collapsibleRequestTypes.indexOf(context.requestType) !== -1 ) {

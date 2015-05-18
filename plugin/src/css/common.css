@@ -144,3 +144,11 @@ body.off #switch .fa {
     background: #2296FC !important;
     padding: 0 !important;
 }
+
+.register a {
+    display: block;
+    text-align: center;
+    color: #FFF;
+    background: #2296FC;
+    font-weight: 400;
+}

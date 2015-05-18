@@ -75,6 +75,7 @@
 
     // HC START
     // :TODO: lot's of refactoring
+    var hcInterval = -1;
     var humancreditButton = function() {
         if (document.body === null) {
             return;
@@ -85,17 +86,17 @@
         for (var i in images) {
             if (images[i].src && images[i].style.display != "none") {
                 images[i].className = 'humancredit-ad';
-                var rect = images[i].getBoundingClientRect();
                 var hc = null;
                 var theId = "humancredit-ad-" + i;
-                var feedbackUrl = "";
-
-                var elem = images[i].parentElement.parentElement.querySelectorAll("a.hide")[0];
-                if (elem.href) {
-                    feedbackUrl = elem.href;
-                }
 
                 if (!document.getElementById(theId)) {
+                    var rect = images[i].getBoundingClientRect();
+                    var feedbackUrl = "";
+
+                    var elem = images[i].parentElement.parentElement.querySelectorAll("a.hide")[0];
+                    if (elem.href) {
+                        feedbackUrl = elem.href;
+                    }
 
                     // container
                     hc = document.createElement("div");
@@ -109,7 +110,14 @@
                     var hcImg = document.createElement("img");
                     hcImg.id = theId + "-img";
                     hcImg.className = 'humancredit-ad';
-                    hcImg.src = chrome.extension.getURL("/img/icon_128.png");
+                    if (vAPI.chrome) {
+                        hcImg.src = chrome.extension.getURL("/img/icon_128.png");
+                    }
+                    else {
+                        //console.log(this.contentBaseURI);
+                        hcImg.src = 'chrome://ublock0/content/img/hc.png';
+                    }
+
                     hcImg.title = "Humancredit: " + images[i].alt || images[i].title;
                     hcImg.style.width = "24px";
                     hcImg.style.height = "24px";
@@ -264,10 +272,23 @@
                     // add to dom
                     document.body.appendChild(hc);
                 }
+                else {
+                    //clearInterval(hcInterval);
+                }
             }
         }
     };
 
-    //console.debug("humancredit-ui.js > start!");
-    setTimeout(humancreditButton, 1000);
+    var localMessager = vAPI.messaging.channel('humancredit.js');
+    localMessager.send({
+        what: 'getHcLevel',
+        url: window.location.hostname,
+    }, function(response) {
+        //console.debug("humancredit-ui.js > start!");
+        //console.debug(vAPI);
+        if (parseInt(response) > 1) {
+            hcInterval = setInterval(humancreditButton, 1000);
+        }
+    });
+
 })();

@@ -22,8 +22,8 @@ gulp.task('build', function() {
     execSync('rsync -av plugin/platform/ build/platform/');
 
     // build extension
-    execSync('cd build && tools/make-chromium.sh'); // all');
-    //execSync('cd build && tools/make-firefox.sh all');
+    execSync('cd build && tools/make-chromium.sh all'); // all');
+    execSync('cd build && tools/make-firefox.sh all');
 });
 
 /**

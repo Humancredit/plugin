@@ -37,10 +37,15 @@
     /**
      *
      */
-    checkForSignature: function(context, result) {
+    checkForSignature: function(context, tabId, result) {
         // :TODO: Humancredit Signature check using the certificate and split URL
         //console.debug('humancredit.js > checkForSignature');
-        if (context.requestURL.indexOf(this.signatureParam) > -1) {
+
+        // hcLevel: 0 - disabled filter, 0 - block everything, 1 + 2 allow filtering
+        //console.debug(context);
+        //console.debug(context.rootHostname, "/", context.requestHostname);
+        var hcLevel = vAPI.localStorage.getItem('hcLevel' + context.rootHostname);
+        if (hcLevel > 1 && context.requestURL.indexOf(this.signatureParam) > -1) {
             //console.debug("Humancredit signature found!");
 
             var parts = context.requestURL.split(this.signatureParam);
@@ -62,5 +67,33 @@
         }
 
         return result;
+    },
+
+    /**
+     *
+     * @param {Object} request
+     * @param {Object} sender
+     * @param {Object} callback
+     */
+    onMessage: function(request, sender, callback) {
+        // Async
+        switch ( request.what ) {
+            case 'getHcLevel':
+                //console.log(request.url);
+                if (vAPI.localStorage.getItem('hcLevel' + sender.tab.id) === null) {
+                    vAPI.localStorage.setItem('hcLevel' + sender.tab.id, 2);
+                }
+                //console.log(vAPI.localStorage.getItem('hcLevel' + sender.tab.id));
+                callback(vAPI.localStorage.getItem('hcLevel' + sender.tab.id));
+                return;
+
+            case 'clearCache':
+                µBlock.pageStores[request.tabId].reuse();
+                µBlock.cosmeticFilteringEngine.reset();
+                return;
+
+        }
     }
 };
+
+vAPI.messaging.listen('humancredit.js', µBlock.Humancredit.onMessage);
