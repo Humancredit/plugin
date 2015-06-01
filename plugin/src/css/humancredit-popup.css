@@ -6,12 +6,12 @@
 #hc ul {
     padding: 0;
     text-align: center;
-    margin-bottom: 20px !important;
+    margin-bottom: 0 !important;
 }
 
 #hc li {
     display: inline-block;
-    width: 20px;
+    width: 60px;
     font-size: 12px;
     font-weight: bold;
 }
@@ -19,16 +19,16 @@
 #hcFace {
     background: url('../img/faces.png') top left no-repeat #FFF;
     width: 62px;
-    height: 90px;
+    height: 110px;
     display: block;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 10px;
     line-height: 200px;
     font-size: 12px;
 }
 
 #hcFace.level0 {
-    background-position: 0 0;
+    background-position: -517px 0;
 }
 
 #hcFace.level1 {
@@ -36,9 +36,19 @@
 }
 
 #hcFace.level2 {
-    background-position: -259px 0;
+    /*background-position: -259px 0;*/
+    background-position: -388px 0;
 }
 
 #hcFace.level3 {
-    background-position: -389px 0;
+    background-position: -388px 0;
+}
+
+#hcText {
+    margin: 0 auto;
+    white-space: normal;
+}
+
+.register {
+    margin: 0 !important;
 }

@@ -89,7 +89,7 @@
 
             case 'clearCache':
                 µBlock.pageStores[request.tabId].reuse();
-                µBlock.cosmeticFilteringEngine.reset();
+                //µBlock.cosmeticFilteringEngine.reset();
                 return;
 
         }

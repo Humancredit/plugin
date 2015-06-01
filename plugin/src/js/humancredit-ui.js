@@ -195,7 +195,7 @@
                     hcBlockItem.style.margin = "0";
                     hcBlockItem.style.cursor = "pointer";
                     hcBlockItem.style.borderTop = "1px solid #FFF";
-                    hcBlockItem.innerHTML = "Not relevant";
+                    hcBlockItem.innerHTML = "I’m not interested";
                     hcBlockItem.feedbackUrl = feedbackUrl;
                     hcBlockItem.addEventListener("click", function(event) {
 
@@ -239,7 +239,7 @@
                     hcDislikeItem.style.margin = "0";
                     hcDislikeItem.style.cursor = "pointer";
                     hcDislikeItem.style.borderTop = "1px solid #FFF";
-                    hcDislikeItem.innerHTML = "I don't like this";
+                    hcDislikeItem.innerHTML = "Don’t show this again";
                     hcDislikeItem.feedbackUrl = feedbackUrl;
                     hcDislikeItem.addEventListener("click", function(event) {
 

@@ -151,4 +151,6 @@ body.off #switch .fa {
     color: #FFF;
     background: #2296FC;
     font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
 }
